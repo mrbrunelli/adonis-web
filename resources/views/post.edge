@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang='pt-br'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+  <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+  <title>All posts of AdonisJS</title>
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.15.2/css/all.css'
+        integrity='sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu' crossorigin='anonymous'>
+  <link href='https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap' rel='stylesheet'>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    *:focus {
+      outline: none;
+    }
+
+    html, body {
+      background-color: #F7F8FA;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      color: #46444c;
+      position: relative;
+    }
+
+    body:before {
+      content: '';
+      background: #5A45FF;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      position: absolute;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #posts {
+      font-family: 'Poppins', sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #posts td, #posts th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #posts tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #posts tr:hover {
+      background-color: #ddd;
+    }
+
+    #posts th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: tomato;
+      color: white;
+    }
+
+    .back {
+      background-color: tomato;
+      padding: 20px;
+    }
+
+    .back a {
+      color: #fff;
+      font-size: 18px;
+    }
+
+    td span {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+<div class='container'>
+  <div class='back'>
+    <a href='/'><i class='fas fa-arrow-left'></i> Voltar </a>
+  </div>
+  <table id='posts'>
+    <tr>
+      <th>Título</th>
+      <th>Conteúdo</th>
+      <th>Gerenciar</th>
+    </tr>
+    @each(post in posts)
+    <tr>
+      <td>{{ post.title }}</td>
+      <td>{{ post.description }}</td>
+      <td class='center'>
+        <span onclick='deletar({{ post.id }}, `{{ post.title }}`)'>
+          <i class='fas fa-trash'></i>
+        </span>
+      </td>
+    </tr>
+    @endeach
+  </table>
+</div>
+</body>
+<script>
+  function deletar(id, title) {
+    var confirmation = confirm(`Atenção! Tem certeza que deseja deletar o post ${id} - ${title}?`)
+    if (confirmation) {
+      try {
+        fetch(`/posts/${id}`, {
+          method: 'DELETE'
+        })
+        .then(() => {
+          alert('Post deletado com sucesso!')
+          location.reload()
+        })
+      } catch (e) {
+        throw new Error(e.message)
+      }
+    }
+  }
+</script>
+</html>
